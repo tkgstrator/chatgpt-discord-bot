@@ -3,8 +3,6 @@ import OpenAI from 'openai';
 
 import { Configuration } from './configuration.js';
 import { Model } from './model.js';
-import { plainToInstance } from 'class-transformer';
-import { prompt } from './dan.js';
 
 export class AIClient {
   private readonly token: string;
@@ -41,8 +39,8 @@ export class AIClient {
          * チャットを継続するためメッセージを追加する
          * 100以上の履歴は遡らない
          */
-        this.messages.push({ content: message.content, role: 'user' })
-        this.messages = this.params.concat(this.messages.slice(-100))
+        this.messages.push({ content: message.content, role: 'user' });
+        this.messages = this.params.concat(this.messages.slice(-100));
         const response = await this.openai.chat.completions.create({
           messages: this.messages,
           model: Model.GPT35Turbo0613,
@@ -59,19 +57,19 @@ export class AIClient {
   /**
    * メッセージ履歴
    */
-  private messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = []
+  private messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [];
   /**
    * システム設定
    */
   private params: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
-    "清楚な女子高生の口調で返事をしてください",
+    '清楚な女子高生の口調で返事をしてください',
     // prompt
   ].map((content) => {
     return {
-        content: content,
-        role: 'system'
-    }
-  })
+      content: content,
+      role: 'system',
+    };
+  });
 
   async login() {
     this.client.login(this.token);
