@@ -2,6 +2,7 @@ import { Client, Events, GatewayIntentBits, REST, Routes } from 'discord.js';
 
 import { model } from './commands/model.js';
 import { reset } from './commands/reset.js';
+import { rule } from './commands/rule.js';
 import { status } from './commands/status.js';
 import { Configuration } from './configuration.js';
 import { Chat } from './dto/chat.js';
@@ -47,7 +48,7 @@ export class AIClient {
     /**
      * スラッシュコマンド登録
      */
-    const commaneds = [model.data, status.data, reset.data].map((command) => command.toJSON());
+    const commaneds = [model.data, status.data, reset.data, rule.data].map((command) => command.toJSON());
     const rest = new REST({ version: '10' }).setToken(this.token);
     rest
       .put(Routes.applicationGuildCommands(this.application_id, this.guild_id), {
@@ -74,13 +75,18 @@ export class AIClient {
         interaction.reply({ content: 'Change model successfuly!' });
       }
       if (interaction.commandName === Command.RESET) {
-        const chat: Chat = this.getChatByAuthorId(interaction.user.id)
-        reset.execute(interaction, chat)
+        const chat: Chat = this.getChatByAuthorId(interaction.user.id);
+        reset.execute(interaction, chat);
       }
       if (interaction.commandName === Command.STATUS) {
         const authorId: string = interaction.user.id;
         const chat: Chat = this.getChatByAuthorId(authorId);
-        status.execute(interaction, chat)
+        status.execute(interaction, chat);
+      }
+      if (interaction.commandName === Command.RULE) {
+        const authorId: string = interaction.user.id;
+        const chat: Chat = this.getChatByAuthorId(authorId);
+        rule.execute(interaction, chat);
       }
     });
     this.client.on(Events.MessageCreate, async (message) => {
@@ -100,7 +106,6 @@ export class AIClient {
          * 送信してきたユーザーのチャット履歴を取得する
          */
         const chat: Chat = this.getChatByAuthorId(message.author.id);
-        console.log(chat)
         chat.ask(message);
       }
     });
