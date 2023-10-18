@@ -12,13 +12,13 @@ export class Chat {
   /**
    * チャット履歴
    */
-  readonly messages: OpenAI.Chat.Completions.ChatCompletionMessage[]
+  readonly messages: OpenAI.Chat.Completions.ChatCompletionMessage[];
   /**
    * システムから指示された初期設定
    */
-  readonly prefix: OpenAI.Chat.Completions.ChatCompletionMessage[] = [
-    { content: '女子高生のような口調で返事をしてください', role: 'system' }
-  ]
+  prefix: OpenAI.Chat.Completions.ChatCompletionMessage[] = [
+    { content: '女子高生のような口調で返事をしてください', role: 'system' },
+  ];
   /**
    * 利用料
    */
@@ -30,7 +30,7 @@ export class Chat {
   /**
    * AI
    */
-  private openai: OpenAI;
+  private readonly openai: OpenAI;
 
   constructor(authorId: string) {
     this.authorId = authorId;
@@ -71,7 +71,7 @@ export class Chat {
     message.channel.sendTyping();
     const timer = setInterval(() => {
       message.channel.sendTyping();
-    }, 10000)
+    }, 10000);
     const completion = await this.openai.chat.completions.create({
       messages: this.prefix.concat(this.messages.slice(-10)),
       model: this.model,
@@ -83,11 +83,18 @@ export class Chat {
      * 返事を追加
      */
     this.messages.push(completion.choices[0].message);
-    clearInterval(timer)
+    clearInterval(timer);
     try {
-      message.reply(response);
+      /**
+       * 長すぎる返事は最初の1500文字だけ返す
+       */
+      if (response.length >= 1500) {
+        message.reply(response.slice(0, 1500) + '...');
+      } else {
+        message.reply(response);
+      }
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
 
@@ -134,5 +141,6 @@ export class Chat {
    */
   reset() {
     this.messages.splice(0);
+    this.prefix = [{ content: '女子高生のような口調で返事をしてください', role: 'system' }];
   }
 }

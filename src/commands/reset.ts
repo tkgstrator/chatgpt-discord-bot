@@ -5,7 +5,7 @@ import { Chat } from '../dto/chat.js';
 export const reset = {
   data: new SlashCommandBuilder().setName('reset').setDescription('Reset chat history'),
   execute: async (interaction: any, chat: Chat) => {
-    chat.reset()
+    chat.reset();
     interaction.reply('Reset chat history successfully!');
   },
 };
