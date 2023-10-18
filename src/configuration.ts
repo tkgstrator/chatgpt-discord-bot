@@ -24,6 +24,5 @@ export class Configuration {
     this.application_id = process.env.APPLICATION_ID;
     this.api_key = process.env.CHATGPT_API_KEY;
     this.channel_id = process.env.CHANNEL_ID;
-    console.log(this);
   }
 }
