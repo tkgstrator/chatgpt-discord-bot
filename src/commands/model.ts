@@ -22,7 +22,7 @@ export const model = {
     ),
   execute: async (interaction: any): Promise<Model> => {
     const model: Model =
-      Object.values(Model).find((model) => model === interaction.options.getString('model')) ?? Model.GPT35_0613;
+      Object.values(Model).find((model) => model === interaction.options.getString('model')) ?? Model.GPT35_16K_1106;
     await interaction.reply(`Change model to ${model} successfully`);
     return model;
   },
