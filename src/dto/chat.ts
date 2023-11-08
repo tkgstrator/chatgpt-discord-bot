@@ -36,7 +36,7 @@ export class Chat {
     this.authorId = authorId;
     this.messages = [];
     this.usage = 0;
-    this.model = Model.GPT35_0613;
+    this.model = Model.GPT35_16K_1106;
     this.openai = new OpenAI({ apiKey: process.env.CHATGPT_API_KEY });
   }
 
@@ -107,28 +107,20 @@ export class Chat {
     if (usage === undefined) return 0;
     const input: number = (() => {
       switch (this.model) {
-        case (Model.GPT35, Model.GPT35_0613):
-          return 0.0015;
-        case (Model.GPT35_16k, Model.GPT35_16k_0613):
-          return 0.003;
-        case (Model.GPT4, Model.GPT4_0613):
-          return 0.03;
-        // case (Model.GPT4_32k, Model.GPT4_32k_0613):
-        //   return 0.06;
+        case (Model.GPT35_16K_1106):
+          return 0.001;
+        case (Model.GPT4_128k, Model.GPT4_128k_VISION):
+          return 0.01;
         default:
           return 0;
       }
     })();
     const output: number = (() => {
       switch (this.model) {
-        case (Model.GPT35, Model.GPT35_0613):
+        case (Model.GPT35_16K_1106):
           return 0.002;
-        case (Model.GPT35_16k, Model.GPT35_16k_0613):
-          return 0.004;
-        case (Model.GPT4, Model.GPT4_0613):
-          return 0.06;
-        // case (Model.GPT4_32k, Model.GPT4_32k_0613):
-        //   return 0.12;
+        case (Model.GPT4_128k, Model.GPT4_128k_VISION):
+          return 0.03;
         default:
           return 0;
       }

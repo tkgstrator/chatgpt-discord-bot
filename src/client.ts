@@ -127,7 +127,7 @@ export class AIClient {
   }
 
   private getModel(modelName: string | null): Model {
-    return Object.values(Model).find((model) => model === modelName) ?? Model.GPT35_0613;
+    return Object.values(Model).find((model) => model === modelName) ?? Model.GPT35_16K_1106;
   }
 
   /**
