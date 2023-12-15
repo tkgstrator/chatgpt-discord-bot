@@ -7,5 +7,3 @@ services:
       GUILD_ID: $GUILD_ID
       APPLICATION_ID: $APPLICATION_ID
       CHANNEL_ID: $CHANNEL_ID
-    ports:
-      - "3000:3000"

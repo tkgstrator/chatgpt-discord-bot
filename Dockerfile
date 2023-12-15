@@ -1,15 +1,37 @@
-FROM node:18.17.1-slim
+FROM node:18.17.1-slim as build
+WORKDIR /build
 
-WORKDIR /app
+COPY src ./src/
+COPY tsconfig.json .
+COPY tsconfig.build.json .
+COPY package.json .
+COPY yarn.lock .
+COPY .eslintrc.yaml .
+COPY .prettierrc.yaml .
+COPY .yarnrc.yaml .
 
-COPY ./src ./src
-COPY ./tsconfig.json ./
-COPY ./tsconfig.build.json ./
-COPY ./package.json ./
-COPY ./yarn.lock ./
-
-RUN yarn install && yarn cache clean --all
+RUN yarn install
 RUN yarn build
 
-EXPOSE 3000
+FROM node:18.17.1-slim as module
+WORKDIR /module
+
+COPY src ./src/
+COPY tsconfig.json .
+COPY tsconfig.build.json .
+COPY package.json .
+COPY yarn.lock .
+COPY .eslintrc.yaml .
+COPY .prettierrc.yaml .
+COPY .yarnrc.yaml .
+
+RUN yarn install --prod
+
+FROM gcr.io/distroless/nodejs18-debian12 AS dist
+WORKDIR /app
+
+COPY --from=build /build/dist ./dist
+COPY --from=build /build/package.json ./
+COPY --from=module /module/node_modules ./node_modules
+
 CMD ["yarn", "dev"]
