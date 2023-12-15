@@ -34,4 +34,4 @@ COPY --from=build /build/dist ./dist
 COPY --from=build /build/package.json ./
 COPY --from=module /module/node_modules ./node_modules
 
-CMD ["yarn", "dev"]
+CMD ["dist/src/index"]
