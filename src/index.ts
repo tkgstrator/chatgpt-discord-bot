@@ -1,4 +1,3 @@
-import { AIClient } from './client.js';
+import { config } from './configuration';
 
-const client = new AIClient();
-await client.login();
+console.log(config);

@@ -1,33 +1,5 @@
 {
-    "compilerOptions": {
-        "strict": true,
-        "module": "NodeNext",
-        "esModuleInterop": true,
-        "declaration": true,
-        "removeComments": true,
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "allowSyntheticDefaultImports": true,
-        "strictPropertyInitialization": false,
-        "resolveJsonModule": true,
-        "target": "ES2022",
-        "sourceMap": true,
-        "outDir": "./dist",
-        "baseUrl": "./",
-        "paths": {
-            "*": [
-                "./node_modules/*"
-            ],
-            "~/*": [
-                "./src/*.ts"
-            ]
-        },
-        "incremental": true,
-        "skipLibCheck": true,
-        "moduleResolution": "NodeNext",
-    },
-    "ts-node": {
-        "esm": true,
-        "experimentalSpecifierResolution": "node"
-    }
+  "compilerOptions": {
+    "experimentalDecorators": true
+  }
 }

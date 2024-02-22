@@ -1,28 +1,42 @@
+import { plainToInstance } from 'class-transformer';
+import { IsString, validateSync } from 'class-validator';
 import * as dotenv from 'dotenv';
+import 'reflect-metadata';
 
-dotenv.config();
-
-export class Configuration {
+export class DiscordConfig {
+  @IsString()
   readonly token: string;
-  readonly guild_id: string;
-  readonly application_id: string;
-  readonly channel_id: string;
-  readonly api_key: string;
 
-  constructor() {
-    if (
-      process.env.DISCORD_TOKEN === undefined ||
-      process.env.GUILD_ID === undefined ||
-      process.env.APPLICATION_ID === undefined ||
-      process.env.CHATGPT_API_KEY === undefined ||
-      process.env.CHANNEL_ID === undefined
-    ) {
-      throw new Error('Environment variables are not set');
-    }
-    this.token = process.env.DISCORD_TOKEN;
-    this.guild_id = process.env.GUILD_ID;
-    this.application_id = process.env.APPLICATION_ID;
-    this.api_key = process.env.CHATGPT_API_KEY;
-    this.channel_id = process.env.CHANNEL_ID;
-  }
+  @IsString()
+  readonly guild_id: string;
+
+  @IsString()
+  readonly application_id: string;
+
+  @IsString()
+  readonly channel_id: string;
+
+  @IsString()
+  readonly api_key: string;
 }
+
+export const config: DiscordConfig = (() => {
+  dotenv.config();
+
+  const configuration = plainToInstance(
+    DiscordConfig,
+    {
+      api_key: process.env.CHATGPT_API_KEY,
+      application_id: process.env.DISCORD_APPLICATION_ID,
+      channel_id: process.env.DISCORD_CHANNEL_ID,
+      guild_id: process.env.DISCORD_GUILD_ID,
+      token: process.env.DISCORD_BOT_TOKEN,
+    },
+    { enableImplicitConversion: true },
+  );
+  const errors = validateSync(configuration, { skipMissingProperties: false });
+  if (errors.length > 0) {
+    throw new Error(errors.toString());
+  }
+  return configuration;
+})();
