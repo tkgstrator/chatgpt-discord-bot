@@ -107,7 +107,7 @@ export class Chat {
     if (usage === undefined) return 0;
     const input: number = (() => {
       switch (this.model) {
-        case (Model.GPT35_16K_1106):
+        case Model.GPT35_16K_1106:
           return 0.001;
         case (Model.GPT4_128k, Model.GPT4_128k_VISION):
           return 0.01;
@@ -117,7 +117,7 @@ export class Chat {
     })();
     const output: number = (() => {
       switch (this.model) {
-        case (Model.GPT35_16K_1106):
+        case Model.GPT35_16K_1106:
           return 0.002;
         case (Model.GPT4_128k, Model.GPT4_128k_VISION):
           return 0.03;

@@ -1,37 +1,22 @@
-FROM node:18.17.1-slim as build
+FROM oven/bun:1.0.28 as build
 WORKDIR /build
 
-COPY src ./src/
-COPY tsconfig.json .
-COPY tsconfig.build.json .
-COPY package.json .
-COPY yarn.lock .
-COPY .eslintrc.yaml .
-COPY .prettierrc.yaml .
-COPY .yarnrc.yaml .
+COPY src tsconfig.json tsconfig.build.json package.json ./
+RUN bun install
+RUN bun run build
 
-RUN yarn install
-RUN yarn build
 
-FROM node:18.17.1-slim as module
+FROM oven/bun:1.0.28 as module
 WORKDIR /module
 
-COPY src ./src/
-COPY tsconfig.json .
-COPY tsconfig.build.json .
-COPY package.json .
-COPY yarn.lock .
-COPY .eslintrc.yaml .
-COPY .prettierrc.yaml .
-COPY .yarnrc.yaml .
+COPY src tsconfig.json tsconfig.build.json package.json ./
+RUN bun install --production
+RUN bun run build
 
-RUN yarn install --prod
-
-FROM gcr.io/distroless/nodejs18-debian12 AS dist
+FROM oven/bun:1.0.28-distroless AS dist
 WORKDIR /app
 
 COPY --from=build /build/dist ./dist
-COPY --from=build /build/package.json ./
 COPY --from=module /module/node_modules ./node_modules
 
-CMD ["dist/index"]
+ENTRYPOINT [ "bun", "run", "dist/index.js" ]

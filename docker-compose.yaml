@@ -1,7 +1,10 @@
 services:
   app:
-    image: tkgling/chatgpt-discord-bot:latest
-    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tkgling/chatgpt-discord-bot:latest
+    restart: always
     environment:
       DISCORD_TOKEN: $DISCORD_TOKEN
       GUILD_ID: $GUILD_ID
