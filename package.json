@@ -1,4 +1,10 @@
 {
+  "name": "chatgpt-discord-bot",
+  "version": "1.0.0",
+  "description": "",
+  "author": "tkgling",
+  "private": true,
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "bun src/index.ts",
