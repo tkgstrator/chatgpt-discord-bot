@@ -1,3 +1,4 @@
-import { config } from './configuration';
+import { AIClient } from './utils/chatgpt'
 
-console.log(config);
+const client = new AIClient()
+client.login()
