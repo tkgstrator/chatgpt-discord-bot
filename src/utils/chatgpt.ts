@@ -131,7 +131,7 @@ export class User extends OpenAI {
     super()
     this.authorId = authorId
     this.messages = []
-    this.model = Model.GPT35_16K_1106
+    this.model = config.model
   }
 
   /**
